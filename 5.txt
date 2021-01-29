@@ -1,0 +1,50 @@
+SQL> create table Sends(Authcode varchar2(10),
+  2  Pubcode varchar2(10));
+
+Table created.
+
+SQL> create table Publishes(Bookcode varchar2(10),
+  2  Pubcode varchar2(10));
+
+Table created.
+
+SQL> alter table Writes
+  2  add constraint Writes_Authcode_fk foreign key(Authcode)
+  3  references Author(Authcode);
+
+Table altered.
+
+SQL> alter table Sends
+  2  add constraint Sends_Authcode_fk foreign key(Authcode)
+  3  references Author(Authcode);
+
+Table altered.
+
+SQL> alter table Writes
+  2  add constraint Writes_Bookcode_fk foreign key(Bookcode)
+  3  references Book(Bookcode);
+
+Table altered.
+
+SQL> alter table Publishes
+  2  add constraint Publishes_Bookcode_fk foreign key(Bookcode)
+  3  references Book(Bookcode);
+
+Table altered.
+
+SQL> alter table Sends
+  2  add constraint Sends_Pubcode_fk foreign key(Pubcode)
+  3  references Publisher(Pubcode);
+
+Table altered.
+
+SQL> alter table Publishes
+  2  add constraint Publishes_Pubcode_fk foreign key(Pubcode)
+  3  references Publisher(Pubcode);
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+

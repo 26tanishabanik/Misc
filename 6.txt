@@ -1,0 +1,951 @@
+SQL> create table Course(Ccode varchar2(10) constraint Course_Ccode_pk primary key,
+  2  Sname varchar2(30),
+  3  Ccost int);
+
+Table created.
+
+SQL> desc Student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STDNO                                     NOT NULL VARCHAR2(10)
+ SNAME                                              VARCHAR2(30)
+
+SQL> create table Institute(Instname varchar2(30) constraint Student_Stdno_pk primary key,
+  2  Phone int(12)
+  3  );
+Phone int(12)
+         *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table Institute(Instname varchar2(30) constraint Student_Stdno_pk primary key,
+  2  Phone int
+  3  );
+create table Institute(Instname varchar2(30) constraint Student_Stdno_pk primary key,
+                                                        *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint 
+
+
+SQL> create table Institute(Instname varchar2(30) constraint Institute_Instname_pk primary key,
+  2  Phone int
+  3  );
+
+Table created.
+
+SQL> create table Project(Pcode varchar2(10) constraint Student_Stdno_pk primary key,
+  2  Pname varchar2(30)
+  3  );
+create table Project(Pcode varchar2(10) constraint Student_Stdno_pk primary key,
+                                                   *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint 
+
+
+SQL> create table Project(Pcode varchar2(10) constraint Project_Pcode_pk primary key,
+  2  Pname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Does(Stdno varchar2(10),
+  2  Ccode varchar2(10));
+
+Table created.
+
+SQL> create table Conducts(Instname varchar2(30),
+  2  Ccode varchar2(10));
+
+Table created.
+
+SQL> create table Executes(Stdno varchar2(10),
+  2  Pcode varchar2(10));
+
+Table created.
+
+SQL> alter table Does
+  2  add constraint Does_Stdno_fk foreign key(Stdno)
+  3  references Student(Stdno);
+
+Table altered.
+
+SQL> alter table Executes
+  2  add constraint Executes_Stdno_fk foreign key(Stdno)
+  3  references Student(Stdno);
+
+Table altered.
+
+SQL> alter table Does
+  2  add constraint Does_Ccode_fk foreign key(Ccode)
+  3  references Course(Ccode);
+
+Table altered.
+
+SQL> alter table Conducts
+  2  add constraint Conducts_Ccode_fk foreign key(Ccode)
+  3  references Course(Ccode);
+
+Table altered.
+
+SQL> alter table Conducts
+  2  add constraint Conducts_Instname_fk foreign key(Instname)
+  3  references Institute(Instname);
+
+Table altered.
+
+SQL> alter table Executes
+  2  add constraint Executes_Pcode_fk foreign key(Pcode)
+  3  references Project(Pcode);
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table Bus(Busno varchar2(10) constraint Bus_Busno_pk primary key,
+  2  Category varchar2(30),
+  3  Source varchar2(30),
+  4  Destination varchar2(30),
+  5  Distance int
+  6  );
+
+Table created.
+
+SQL> create table Bus_depot(Depocode varchar2(10) constraint Busdepot_Depocode_pk primary key,
+  2  Depocity varchar2(30),
+  3  );
+)
+*
+ERROR at line 3:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table Bus_depot(Depocode varchar2(10) constraint Busdepot_Depocode_pk primary key,
+  2  Depocity varchar2(30));
+
+Table created.
+
+SQL> create table Ticket(Ticketno varchar2(10) constraint Ticket_Ticketno_pk primary key,
+  2  Bookdt date, Fare int
+  3  );
+
+Table created.
+
+SQL> create table Passenger(Pname varchar2(30),
+  2  Age int,
+  3  Gender varchar2(1)
+  4  constraint Passenger_compositekey_pk primary key(Pname,Age));
+constraint Passenger_compositekey_pk primary key(Pname,Age))
+                                                *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table Passenger(Pname varchar2(30),
+  2  Age int,
+  3  Gender varchar2(1),
+  4  constraint Passenger_compositekey_pk primary key(Pname,Age));
+
+Table created.
+
+SQL> desc Passenger
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PNAME                                     NOT NULL VARCHAR2(30)
+ AGE                                       NOT NULL NUMBER(38)
+ GENDER                                             VARCHAR2(1)
+
+SQL> create table Leaves(Busno varchar2(10),
+  2  Depocode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Booked_in(Busno varchar2(10),
+  2  Ticketno varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Belongs(Seatno varchar2(10),
+  2  Ticketno varchar2(10)
+  3  );
+
+Table created.
+
+SQL> alter table Booked_in
+  2  add constraint Bookedin_Ticketno_fk foreign key(Ticketno)
+  3  references Ticket(Ticketno);
+
+Table altered.
+
+SQL> alter table Belongs
+  2  add constraint Belongs_Ticketno_fk foreign key(Ticketno)
+  3  references Ticket(Ticketno);
+
+Table altered.
+
+SQL> alter table Passenger
+  2  add constraint Belong;_Ticketno_fk foreign key(Ticketno)
+  3  ;
+add constraint Belong;_Ticketno_fk foreign key(Ticketno)
+                     *
+ERROR at line 2:
+ORA-00911: invalid character 
+
+
+SQL> alter table Leaves
+  2  add constraint Leaves_Busno_fk foreign key(Busno)
+  3  references Bus(Busno);
+
+Table altered.
+
+SQL> alter table Booked_in
+  2  add constraint Bookedin_Busno_fk foreign key(Busno)
+  3  references Bus(Busno);
+
+Table altered.
+
+SQL> alter table Leaves
+  2  add constraint Leaves_Depocode_fk foreign key(Depocode)
+  3  references Bus_depot(Depocode);
+
+Table altered.
+
+SQL> alter table Belongs
+  2  add const; _Depocode_fk foreign key(Depocode)
+  3  ;
+add const; _Depocode_fk foreign key(Depocode)
+         *
+ERROR at line 2:
+ORA-00911: invalid character 
+
+
+SQL> commit;
+
+Commit complete.
+
+SQL> desc Employee
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEEID                                NOT NULL NUMBER(3)
+ LNAME                                              VARCHAR2(10)
+ FNAME                                              VARCHAR2(10)
+ POSITIONID                                         NUMBER(1)
+ SUPERVISOR                                         NUMBER(3)
+ HIREDATE                                           DATE
+ SALARY                                             NUMBER(6)
+ COMMISSION                                         NUMBER(5)
+ DEPTID                                             NUMBER(2)
+ QUALID                                             NUMBER(1)
+
+SQL> delete from Employee
+  2  l
+  3  ;
+delete from Employee
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (DS130216.DEPT_EMPLOYEEID_FK) violated - child 
+record found 
+
+
+SQL> desc Dept;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTID                                    NOT NULL NUMBER(2)
+ DEPTNAME                                           VARCHAR2(10)
+ LOCATION                                           VARCHAR2(15)
+ EMPLOYEEID                                         NUMBER(3)
+
+SQL> delete from Dept;
+delete from Dept
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (DS130216.EMPLOYEE_DEPTID_FK) violated - child 
+record found 
+
+
+SQL> alter table Dept
+  2  drop constraint Dept_EmployeeID_fk;
+
+Table altered.
+
+SQL> alter table Employee
+  2  drop constraint Employee_DeptID_fk;
+
+Table altered.
+
+SQL> delete from Employee
+  2  ;
+
+8 rows deleted.
+
+SQL> delete from Dept;
+
+4 rows deleted.
+
+SQL> drop table Employee;
+
+Table dropped.
+
+SQL> drop table EDept;
+drop table EDept
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> drop table Dept;
+
+Table dropped.
+
+SQL> create table Employee(Eno varchar2(10) constraint Employee_Eno_pk primary key,
+  2  Ename varchar2(30),Gender varchar2(1),Eplace varchar2(30),Dob date, Salary int,Doj date
+  3  );
+
+Table created.
+
+SQL> create table Skill(Scode varchar2(10) constraint Skill_Scode_pk primary key,
+  2  Skillcat varchar2(30)
+  3  );
+
+Table created.
+
+SQL> desc Department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTID                                    NOT NULL NUMBER(1)
+ DEPTNAME                                           VARCHAR2(20)
+ FACID                                              NUMBER(3)
+
+SQL> delete from Department;
+delete from Department
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (DS130216.FACULTY_DEPTID_FK) violated - child 
+record found 
+
+
+SQL> alter table Faculty
+  2  drop constraint Faculty_DeptID_fk;
+
+Table altered.
+
+SQL> delete from Department;
+
+5 rows deleted.
+
+SQL> drop table Departmemt;
+drop table Departmemt
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> drop table Department;
+
+Table dropped.
+
+SQL> create table Department(Dno varchar2(10) constraint Department_Dno_pk primary key,
+  2  Dname varchar2(30),Hod varchar2(30)
+  3  );
+
+Table created.
+
+SQL> desc Qualification;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ QUALID                                    NOT NULL NUMBER(1)
+ QUALDESC                                           VARCHAR2(15)
+
+SQL> delete from Qualification;
+
+5 rows deleted.
+
+SQL> drop table Qualification;
+
+Table dropped.
+
+SQL> create table Qualification(Qcode varchar2(10) constraint Qualification_Qcode_pk primary key,
+  2  Degree varchar2(30),Discipline varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Works_in(Eno varchar2(10),
+  2  Dno varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Posses(Eno varchar2(10),
+  2  Scode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Keeping(Eno varchar2(10),
+  2  Qcode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> alter table Works_in
+  2  add constraint Worksin_Eno_fk foreign key(Eno)
+  3  references Employee(Eno);
+
+Table altered.
+
+SQL> alter table Posses
+  2  add constraint Posses_Eno_fk foreign key(Eno)
+  3  references Employee(Eno);
+
+Table altered.
+
+SQL> alter table Keeping
+  2  add constraint Keeping_Eno_fk foreign key(Eno)
+  3  references Employee(Eno);
+
+Table altered.
+
+SQL> alter table Works_in
+  2  add constraint Worksin_Dno_fk foreign key(Eno)
+  3  /
+add constraint Worksin_Dno_fk foreign key(Eno)
+                                             *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> alter table Works_in
+  2  add constraint Worksin_Dno_fk foreign key(Dno)
+  3  references Department(Dno);
+
+Table altered.
+
+SQL> alter table Posses
+  2  add constraint Posses_Scode_fk foreign key(Scode)
+  3  references Skill(Scode);
+
+Table altered.
+
+SQL> alter table Keeping
+  2  add constraint Keeping_Qcode_fk foreign key(Qcode)
+  3  references Qulification(Qcode);
+references Qulification(Qcode)
+           *
+ERROR at line 3:
+ORA-00942: table or view does not exist 
+
+
+SQL> alter table Keeping
+  2  add constraint Keeping_Qcode_fk foreign key(Qcode)
+  3  references Qualification(Qcode);
+
+Table altered.
+
+SQL> create table Sales_rep(Repcode varchar2(10) constraint Salesrep_Repcode_pk primary key,
+  2  Repname varchar2(30),Salary number(10)
+  3  );
+
+Table created.
+
+SQL> create table Company(Comhq varchar2(30) constraint Company_Comhq_pk primary key,
+  2  Comname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Product(Pcode varchar2(30) constraint Product_Pcode_pk primary key,
+  2  Pname varchar2(30),Pcom int
+  3  );
+
+Table created.
+
+SQL> create table Recruit(Repcode varchar2(10),
+  2  Comname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Sales(Repcode varchar2(10),
+  2  Pcode varchar2(10),
+  3  Qtysold int
+  4  );
+
+Table created.
+
+SQL> create table Owns(Comname varchar2(30),
+  2  Pcode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> alter table Recruit
+  2  add constraint Recruit_Repcode_fk foreign key(Repcode)
+  3  references Sales_rep(Repcode);
+
+Table altered.
+
+SQL> alter table Sales
+  2  add constraint Sales_Repcode_fk foreign key(Repcode)
+  3  references Sales_rep(Repcode);
+
+Table altered.
+
+SQL> alter table Recruit
+  2  add constraint Recruit_Comname_fk foreign key(Comname)
+  3  references Company(Comname);
+references Company(Comname)
+                   *
+ERROR at line 3:
+ORA-02270: no matching unique or primary key for this column-list 
+
+
+SQL> alter table Sales
+  2  add constraint Sales_Pcode_fk foreign key(Pcode)
+  3  references Product(Pcode);
+
+Table altered.
+
+SQL> alter table Owns
+  2  add constraint Owns_Pcode_fk foreign key(Pcode)
+  3  references Product(Pcode);
+
+Table altered.
+
+SQL> select Comhq,O.Pcode
+  2  from Company c,Owns o
+  3  where c.Comname=o.Comname;
+
+no rows selected
+
+SQL> insert into Sales_rep(Repcode) values ('101');
+
+1 row created.
+
+SQL> insert into Recruit values ('101','CW');
+
+1 row created.
+
+SQL> insert into Product(Pcode) values ('1001');
+
+1 row created.
+
+SQL> insert into Owns values ('CW','1001');
+
+1 row created.
+
+SQL> select Comhq,O.Pcode
+  2  from Company c,Owns o
+  3  where c.Comname=o.Comname;
+
+no rows selected
+
+SQL> select * from Company;
+
+no rows selected
+
+SQL> select * from Recruit;
+
+REPCODE    COMNAME                                                              
+---------- ------------------------------                                       
+101        CW                                                                   
+
+SQL> select * from Owns;
+
+COMNAME                        PCODE                                            
+------------------------------ ----------                                       
+CW                             1001                                             
+
+SQL> insert into Company values ('here','CW');
+
+1 row created.
+
+SQL> select * from Company;
+
+COMHQ                          COMNAME                                          
+------------------------------ ------------------------------                   
+here                           CW                                               
+
+SQL> select Comhq,O.Pcode
+  2  from Company c,Owns o
+  3  where c.Comname=o.Comname;
+
+COMHQ                          PCODE                                            
+------------------------------ ----------                                       
+here                           1001                                             
+
+SQL> delete from Sales_rep;
+delete from Sales_rep
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (DS130216.RECRUIT_REPCODE_FK) violated - child 
+record found 
+
+
+SQL> delete from Owns;
+
+1 row deleted.
+
+SQL> delete from Recruit;
+
+1 row deleted.
+
+SQL> delete from Product;
+
+1 row deleted.
+
+SQL> delete from Company;
+
+1 row deleted.
+
+SQL> delete from Sales_rep;
+
+1 row deleted.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table Pupil(Rollno varchar2(30) constraint Pupil_Rollno_pk primary key,
+  2  Name varchar2(30),Dob date, Gender varchar2(1)
+  3  );
+
+Table created.
+
+SQL> create table Stream(Scode varchar2(10) constraint Stream_Scode_pk primary key,
+  2  Sname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> drop table Pupil;
+
+Table dropped.
+
+SQL> create table Pupil(Rollno varchar2(10) constraint Pupil_Rollno_pk primary key,
+  2  Name varchar2(30),Dob date, Gender varchar2(1));
+
+Table created.
+
+SQL> create table Subject(Subcode varchar2(10) constraint Subject_Subcode_pk primary key,
+  2  Subname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Teacher(Pno varchar2(10) constraint Teacher_Pno_pk primary key,
+  2  Name varchar2(30),Faculty varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Enrol_in(Rollno varchar2(10),
+  2  Scode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Taught_in(Subcode varchar2(10),
+  2  Scode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Allocated(Pno varchar2(10),
+  2  Scode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Teaches(Pno varchar2(10),
+  2  Subcode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> alter table Enrol_in
+  2  add constraint Enrolin_Scode_fk foreign key(Scode)
+  3  references Stream(Scode);
+
+Table altered.
+
+SQL> alter table Taught_in
+  2  add constraint Taughtin_Scode_fk foreign key(Scode)
+  3  references Stream(Scode);
+
+Table altered.
+
+SQL> alter table Allocated
+  2  add constraint Allocated_Scode_fk foreign key(Scode)
+  3  references Stream(Scode);
+
+Table altered.
+
+SQL> alter table Allocated
+  2  add constraint Allocated_Pno_fk foreign key(Pno)
+  3  references Teacher(Pno);
+
+Table altered.
+
+SQL> alter table Teaches
+  2  add constraint Teaches_Pno_fk foreign key(Pno)
+  3  references Teacher(Pno);
+
+Table altered.
+
+SQL> alter table Teaches
+  2  add constraint Teaches_Subcode_fk foreign key(Subcode)
+  3  references Subject(Subcode);
+
+Table altered.
+
+SQL> alter table Taught_in
+  2  add constraint Taughtin_Subcode_fk foreign key(Subcode)
+  3  references Subject(Subcode);
+
+Table altered.
+
+SQL> alter table Enrol_in
+  2  add constraint Enrolin_Rollno_fk foreign key(Rollno)
+  3  references Pupil(Rollno);
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table Patient(Pregno varchar2(10) constraint Patient_Pregno_pk primary key,
+  2  Pname varchar2(30),Dob date,Gender varchar2(1)
+  3  );
+
+Table created.
+
+SQL> create table Doctor(Dregno varchar2(10) constraint Doctor_Dregno_pk primary key,
+  2  Dname varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Outdoor(Opdno varchar2(10) constraint Outdoor_Opdno_pk primary key,
+  2  Branch varchar2(30)
+  3  );
+
+Table created.
+
+SQL> create table Medical_test(Testcode varchar2(10) constraint Outdoor_Opdno_pk primary key,
+  2  Charge int);
+create table Medical_test(Testcode varchar2(10) constraint Outdoor_Opdno_pk primary key,
+                                                           *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint 
+
+
+SQL> create table Medical_test(Testcode varchar2(10) constraint Medicaltest_Testcode_pk primary key,
+  2  Charge int);
+
+Table created.
+
+SQL> create table Visits(Pregno varchar2(10),
+  2  Opdno varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Undergoes(Pregno varchar2(10),
+  2  Testcode varchar2(10)
+  3  );
+
+Table created.
+
+SQL> create table Refers(Dregno varchar2(10),
+  2  );
+)
+*
+ERROR at line 2:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table Refers(Dregno varchar2(10));
+
+Table created.
+
+SQL> alter table Visits
+  2  add constraint Visits_Pregno_fk foreign key(Pregno)
+  3  references Patient(Pregno);
+
+Table altered.
+
+SQL> alter table Visits
+  2  drop constraint Visits_Pregno_fk;
+
+Table altered.
+
+SQL> drop table Visits
+  2  ;
+
+Table dropped.
+
+SQL> create table Visits(Pregno varchar2(10),
+  2  Opdno varchar2(10), Vdate date);
+
+Table created.
+
+SQL> alter table Visits
+  2  add constraint Visits_Pregno_fk foreign key(Pregno)
+  3  references Patient(Pregno);
+
+Table altered.
+
+SQL> alter table Undergoes
+  2  add constraint Undergoes_Pregno_fk foreign key(Pregno)
+  3  references Patient(Pregno);
+
+Table altered.
+
+SQL> alter table Refers
+  2  add constraint Refers_Dregno_fk foreign key(Dregno)
+  3  references Doctor(Dregno);
+
+Table altered.
+
+SQL> alter table Visits
+  2  add constraint Visits_Opdno_fk foreign key(Opdno)
+  3  references Outdoor(Opdno);
+
+Table altered.
+
+SQL> alter table Undergoes
+  2  add constraint Undergoes_Testcode_fk foreign key(Testcode)
+  3  references Medical_test(Testcode);
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table Vehicle(Vcode varchar2(10) constraint Vehicle_Vcode_pk primary key,
+  2  Vtype number,Vcost number);
+
+Table created.
+
+SQL> desc Dealer
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DCODE                                     NOT NULL VARCHAR2(10)
+ DNAME                                              VARCHAR2(30)
+ DLOC                                               VARCHAR2(30)
+
+SQL> create table Spare(Scode varchar2(10) constraint Vehicle_Vcode_pk primary key,
+  2  Stype number,Scost number);
+create table Spare(Scode varchar2(10) constraint Vehicle_Vcode_pk primary key,
+                                                 *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint 
+
+
+SQL> create table Spare(Scode varchar2(10) constraint Spare_Scode_pk primary key,
+  2  Stype number,Scost number);
+
+Table created.
+
+SQL> create table Deals(Vcode varchar2(10),
+  2  Dcode varchar2(10),V_syear number,V_sold number
+  3  );
+
+Table created.
+
+SQL> create table Keeps(Dcode varchar2(10),
+  2  Scode varchar2(10),S_syear number,S_sold number
+  3  );
+
+Table created.
+
+SQL> 
+SQL> alter table Vehicle
+  2  modify column Vtype varchar2(30);
+modify column Vtype varchar2(30)
+                    *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> alter table Vehicle
+  2  drop column Vtype;
+
+Table altered.
+
+SQL> alter table Vehicle
+  2  add column Vtype varchar2(30);
+add column Vtype varchar2(30)
+    *
+ERROR at line 2:
+ORA-00904: : invalid identifier 
+
+
+SQL> alter table Vehicle
+  2  add column Vtype varchar2(30);
+add column Vtype varchar2(30)
+    *
+ERROR at line 2:
+ORA-00904: : invalid identifier 
+
+
+SQL> alter table Vehicle
+  2  add Vtype varchar2(30);
+
+Table altered.
+
+SQL> desc Vehicle
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ VCODE                                     NOT NULL VARCHAR2(10)
+ VCOST                                              NUMBER
+ VTYPE                                              VARCHAR2(30)
+
+SQL> alter table Spare
+  2  modify Stype varchar2(30);
+
+Table altered.
+
+SQL> desc Spare
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SCODE                                     NOT NULL VARCHAR2(10)
+ STYPE                                              VARCHAR2(30)
+ SCOST                                              NUMBER
+
+SQL> alter table Deals
+  2  add constraint Deals_Vcode_fk foreign key(Vcode)
+  3  references Vehicle(Vcode);
+
+Table altered.
+
+SQL> alter table Deals
+  2  add constraint Deals_Dcode_fk foreign key(Dcode)
+  3  references Dealer(Dcode);
+
+Table altered.
+
+SQL> alter table Keeps
+  2  add constraint Keeps_Dcode_fk foreign key(Dcode)
+  3  references Dealer(Dcode);
+
+Table altered.
+
+SQL> alter table Keeps
+  2  add constraint Keeps_Scode_fk foreign key(Scode)
+  3  references Spare(Scode);
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;
